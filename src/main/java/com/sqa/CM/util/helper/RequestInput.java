@@ -43,15 +43,14 @@ public class RequestInput {
 			// add the current elements
 			newStringArray = Arrays.copyOf(elements, elements.length + 1);
 			// Set the last element to supplied string addString
-			newStringArray[elements.length - 1] = addString;
+			newStringArray[elements.length] = addString;
 		} else {
 			// Supplied array does not contain any elements yet
 			newStringArray = new String[1];
 			// Set the first/last and only element to the supplied addString
 			newStringArray[0] = addString;
 		}
-		return elements;
-
+		return newStringArray;
 	}
 
 	/**
@@ -89,7 +88,7 @@ public class RequestInput {
 
 	/**
 	 * Static Helper Method which asks user specified question and as long as
-	 * they give a valid number will return the number as an character type
+	 * they give a valid input will return the input as an character type
 	 * variable.
 	 *
 	 * @return Character value based on user input
@@ -123,16 +122,15 @@ public class RequestInput {
 
 	/**
 	 * Static Helper Method which asks user specified question and as long as
-	 * they give a valid number will return the number as an character type
-	 * variable.
+	 * they give a input will return a boolean type variable.
 	 *
-	 * @return Character value based on user input
+	 * @return Boolean value based on user input
 	 */
 	public static char getChar(String question, char... characters) {
-
 		while (true) {
-			// Declare Local variables
+			// Declare Local Variables
 			boolean present = false;
+			// Get the character using alternative method to get a char
 			char letter = RequestInput.getChar(question);
 			// Iterate through the supplied chars and see if it is present
 			for (int i = 0; i < characters.length; i++) {
@@ -141,12 +139,12 @@ public class RequestInput {
 				}
 			}
 			// If present variable is set to true and it is a valid option
-			if (present = true) {
-				// Return the character
+			if (present == true) {
+				// return the character
 				return letter;
 			} else {
 				// Give an error message
-				System.out.println("You have not entered a valid character.");
+				System.out.println("You have not entered a valid character (" + letter + ").");
 				// Continue with next iteration
 				continue;
 			}
@@ -186,6 +184,13 @@ public class RequestInput {
 
 	/**
 	 * Static Helper Method which asks user specified question and as long as
+	 * they give a input will return a boolean type variable.
+	 *
+	 * @return Boolean value based on user input
+	 */
+
+	/**
+	 * Static Helper Method which asks user specified question and as long as
 	 * they give a valid number will return the number as an int type variable.
 	 *
 	 * @return Integer value based on user input
@@ -201,6 +206,10 @@ public class RequestInput {
 				// Set the number based on what the user enters on their
 				// keyboard
 				num = Integer.parseInt(scanner.nextLine());
+				// if (num < 1) {
+				// throw new IllegalArgumentException("Number is Less than 1");
+				// }
+
 				// Break out of the infinite loop
 				break;
 			} catch (NumberFormatException e) {
@@ -208,6 +217,11 @@ public class RequestInput {
 				System.out.println("You have not entered a valid number.");
 				// Continue the infinite loop to get a valid number conversion
 				continue;
+				// } catch (IllegalArgumentException e) {
+				// Output to the user that the number is not valid
+				// System.out.println("You have entered a number less than 1.");
+				// Continue the infinite loop to get a valid number conversion
+				// continue;
 			}
 		}
 		// Return the number that the user has entered
