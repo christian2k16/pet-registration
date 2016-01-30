@@ -49,36 +49,18 @@ public class PetRegistration {
 	private static String[] names;
 	private static String[] addresses;
 	private static int[] ages;
-	private static boolean hasRabies;
+	private static boolean[] hasRabies;
+	private static double[] petFees;
 	private static char[] genders;
 	private static Scanner scanner = new Scanner(System.in);
-
-	/**
-	 * Static Helper Method which asks user specified question and return the
-	 * input to user.
-	 *
-	 * @return Input given from user.
-	 */
-	public static String getString(String question) {
-		// Local variable to hold temporary number
-		String input;
-		// Ask the user a question to get relative input
-		System.out.print(question);
-		// Set the number based on what the user enters on their
-		// keyboard
-		input = scanner.nextLine();
-		// Return input user has entered
-		return input;
-	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		numPets = RequestInput.getInt("How many pets would you like to register? ");
+
 		// Register number of pets chosen
-		registerPets();
+		registerPets(RequestInput.getInt("How many pets would you like to register? "));
 		// Display registered pets to the user
 		displayPets();
 		// Exit the system
@@ -90,8 +72,21 @@ public class PetRegistration {
 	 *
 	 */
 	private static void displayPets() {
-		// TODO Auto-generated method stub
-
+		// Iterate types array for Displaying of Pets
+		if (types != null) {
+			// Iterate types array and display strings
+			for (int i = 0; i < types.length; i++) {
+				System.out.println("Animal: " + types[i] + " - " + names[i]);
+				System.out.println("\tAge: " + ages[i]);
+				System.out.println("\tGender: " + genders[i]);
+				System.out.println("\tFees: " + petFees[i]);
+				System.out.println("\tHas Rabies shot: " + hasRabies[i]);
+				System.out.println("\tAddress: " + addresses[i]);
+			}
+		} else {
+			// Let user know they have not registered any pets
+			System.out.println("You have not registered any animals");
+		}
 	}
 
 	/**
@@ -130,140 +125,100 @@ public class PetRegistration {
 	}
 
 	/**
-	 * Method to register a bird into the system
 	 *
-	 * @return
 	 */
-	private static boolean registerBird() {
+	private static void registerAnimal(String type, double regPrice) {
 		// Local variables
 		boolean willRegister;
-		// Tell the user the price to register the bird
-		System.out.println("To register a bird it is $60 a year.");
-		// Set the willRegister local variable to what the helper method will
-		// return for supplied question
-		willRegister = RequestInput.getBoolean("Would you like to register the bird? ");
-		// return the set variable for if the user will register the animal
-		return willRegister;
-	}
 
-	/**
-	 * Method to register a cat into the system
-	 *
-	 * @return
-	 */
-	private static boolean registerCat() {
-		// Local variables
-		boolean willRegister;
-		// Tell the user the price to register the cat
-		System.out.println("To register a cat it is $105 a year.");
-		// Set the willRegister local variable to what the helper method will
-		// return for supplied question
-		willRegister = RequestInput.getBoolean("Would you like to register the cat? ");
-		// return the set variable for if the user will register the animal
-		return willRegister;
-	}
-
-	/**
-	 * Method to register a dog into the system
-	 *
-	 * @return
-	 */
-	private static boolean registerDog() {
-		// Local variables
-		boolean willRegister;
 		// Tell the user the price to register the dog
-		System.out.println("To register a dog it is $120 a year.");
+		System.out.println("To register a " + type.toUpperCase() + " it is $" + regPrice + " a year.");
 		// Set the willRegister local variable to what the helper method will
 		// return for supplied question
-		willRegister = RequestInput.getBoolean("Would you like to register the dog? ");
-		// return the set variable for if the user will register the animal
-		return willRegister;
+		willRegister = RequestInput.getBoolean("Would you like to register the " + type.toUpperCase() + "?");
+		// If the user has requested to register the pet
+		if (willRegister == true) {
+			// Add the type of animal being registered to the types array
+			types = RequestInput.addStringElement(types, type);
+			// else they did not want to register their pet
+		} else {
+			// Give them a message noting they won't be registering it
+			System.out.println("Sorry to hear you do not want to register your " + type.toUpperCase());
+		}
 	}
 
 	/**
-	 * Method to register a fish into the system
+	 * @param numPets
 	 *
-	 * @return
 	 */
-	private static boolean registerFish() {
-		// Local variables
-		boolean willRegister;
-		// Tell the user the price to register the fish
-		System.out.println("To register a fish it is $10 a year.");
-		// Set the willRegister local variable to what the helper method will
-		// return for supplied question
-		willRegister = RequestInput.getBoolean("Would you like to register the fish? ");
-		// return the set variable for if the user will register the animal
-		return willRegister;
+	private static void registerPets(int numPets) {
+		// Register number of pets based on
+		for (int i = 0; i < numPets; i++) {
+			// Register Pets
+			validatePetRegistration();
+		}
+		requestAnimalDetails();
 	}
 
 	/**
-	 * Method to register a horse into the system
 	 *
-	 * @return
 	 */
-	private static boolean registerHorse() {
-		// Local variables
-		boolean willRegister;
-		// Tell the user the price to register the horse
-		System.out.println("To register a dog it is $540 a year.");
-		// Set the willRegister local variable to what the helper method will
-		// return for supplied question
-		willRegister = RequestInput.getBoolean("Would you like to register the horse? ");
-		// return the set variable for if the user will register the animal
-		return willRegister;
+	private static void requestAnimalDetails() {
+		names = new String[types.length];
+		addresses = new String[types.length];
+		genders = new char[types.length];
+		ages = new int[types.length];
+		hasRabies = new boolean[types.length];
+		petFees = new double[types.length];
+		// Request details for all animal inside the types array
+		for (int i = 0; i < types.length; i++) {
+			// Let the user know what they will be entering into the system
+			System.out.println(
+					"It seems you are registering a " + types[i] + ", could you please provide the following details");
+			// Capture the name of the animal inside of the names array
+			names[i] = RequestInput.getString("Please provide the " + types[i].toLowerCase() + "'s name: ");
+			genders[i] = RequestInput.getChar("What is the animal's gender: ", 'M', 'm', 'F', 'f');
+			ages[i] = RequestInput.getInt("How old is " + names[i].toLowerCase() + " :");
+			petFees[i] = RequestInput.getDouble("How much is " + names[i] + " cost you per year?");
+			hasRabies[i] = RequestInput.getBoolean("Does your " + types[i] + " has a Rabies shot?");
+			addresses[i] = RequestInput.getString("Finally, can you please provide a valid mailing address: ");
+		}
+
 	}
 
-	/**
-	 * Method to register a reptile into the system
-	 *
-	 * @return
-	 */
-	private static boolean registerReptile() {
-		// Local variables
-		boolean willRegister;
-		// Tell the user the price to register the reptile
-		System.out.println("To register a reptile it is $85 a year.");
-		// Set the willRegister local variable to what the helper method will
-		// return for supplied question
-		willRegister = RequestInput.getBoolean("Would you like to register the reptile? ");
-		// return the set variable for if the user will register the animal
-		return willRegister;
-	}
-	
 	/**
 	 * Method which iterates through loops setting pet value
 	 */
-	private static void registerPets() {
+	private static void validatePetRegistration() {
 		// Setup variable to create continuous loop based on invalid pet type
 		boolean hasInvalidPet = true;
 		// Loop until valid pet type is entered
 		while (hasInvalidPet) {
 			// TODO Auto-generated method stub
 			String type = RequestInput.getString("What type of pets do you have? ");
-			switch (type) {
+			switch (type.toLowerCase()) {
 			case "dog":
-				registerDog();
+				registerAnimal(type, 120.00);
 				hasInvalidPet = false;
 				break;
 			case "cat":
-				System.out.println("Add a cat");
+				registerAnimal(type, 110.00);
 				hasInvalidPet = false;
 				break;
 			case "fish":
-				System.out.println("Add a fish");
+				registerAnimal(type, 5.00);
 				hasInvalidPet = false;
 				break;
 			case "horse":
-				System.out.println("Add a horse");
+				registerAnimal(type, 550.00);
 				hasInvalidPet = false;
 				break;
 			case "reptile":
-				System.out.println("Add a reptile.");
+				registerAnimal(type, 30.00);
 				hasInvalidPet = false;
 				break;
 			case "bird":
-				System.out.println("Add a bird.");
+				registerAnimal(type, 20.00);
 				hasInvalidPet = false;
 				break;
 			default:
